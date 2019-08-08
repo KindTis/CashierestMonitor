@@ -31,6 +31,13 @@ namespace CapMonitor
             public UInt32 dwTimeout;
         }
 
+        private const UInt32 FLASHW_STOP = 0; //Stop flashing. The system restores the window to its original state.
+        private const UInt32 FLASHW_CAPTION = 1; //Flash the window caption.        
+        private const UInt32 FLASHW_TRAY = 2; //Flash the taskbar button.        
+        private const UInt32 FLASHW_ALL = 3; //Flash both the window caption and taskbar button.        
+        private const UInt32 FLASHW_TIMER = 4; //Flash continuously, until the FLASHW_STOP flag is set.        
+        private const UInt32 FLASHW_TIMERNOFG = 12; //Flash continuously until the window comes to the foreground.  
+
         public static bool FlashWindowEx(IntPtr hWnd)
         {
             FLASHWINFO fInfo = new FLASHWINFO();
@@ -42,6 +49,35 @@ namespace CapMonitor
             fInfo.dwTimeout = 0;
 
             return FlashWindowEx(ref fInfo);
+        }
+
+        public static void FlashWindow(Window win, UInt32 count = UInt32.MaxValue)
+        {
+            //Don't flash if the window is active            
+            if (win.IsActive) return;
+            WindowInteropHelper h = new WindowInteropHelper(win);
+            FLASHWINFO info = new FLASHWINFO
+            {
+                hwnd = h.Handle,
+                dwFlags = FLASHW_ALL | FLASHW_TIMER,
+                uCount = count,
+                dwTimeout = 0
+            };
+
+            info.cbSize = Convert.ToUInt32(Marshal.SizeOf(info));
+            FlashWindowEx(ref info);
+        }
+
+        public static void StopFlashingWindow(Window win)
+        {
+            WindowInteropHelper h = new WindowInteropHelper(win);
+            FLASHWINFO info = new FLASHWINFO();
+            info.hwnd = h.Handle;
+            info.cbSize = Convert.ToUInt32(Marshal.SizeOf(info));
+            info.dwFlags = FLASHW_STOP;
+            info.uCount = UInt32.MaxValue;
+            info.dwTimeout = 0;
+            FlashWindowEx(ref info);
         }
 
         private static System.Timers.Timer mUpdateRecentTransactionTimer;
@@ -66,20 +102,12 @@ namespace CapMonitor
         private void Window_Activated(object sender, EventArgs e)
         {
             this.Topmost = true;
+            StopFlashingWindow(this);
         }
 
         private void Window_Deactivated(object sender, EventArgs e)
         {
             this.Topmost = true;
-            this.Activate();
-
-            FLASHWINFO fInfo = new FLASHWINFO();
-            fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
-            fInfo.hwnd = new WindowInteropHelper(this).Handle;
-            fInfo.dwFlags = 0;
-            fInfo.uCount = UInt32.MaxValue;
-            fInfo.dwTimeout = 0;
-            FlashWindowEx(ref fInfo);
         }
 
         public string InsertComma(string number)
@@ -138,24 +166,25 @@ namespace CapMonitor
                     li.Add(log);
                 }
 
+                mLastTransactionID = lastTransactionID;
+
                 Dispatcher.Invoke((Action)delegate
                 {
                     li.Reverse();
                     foreach (var line in li)
                         lb_recentPayment.Items.Add(line);
-                });
 
-                mLastTransactionID = lastTransactionID;
-
-                Dispatcher.Invoke((Action)delegate
-                {
                     if (VisualTreeHelper.GetChildrenCount(lb_recentPayment) > 0)
                     {
                         Border border = (Border)VisualTreeHelper.GetChild(lb_recentPayment, 0);
                         ScrollViewer scrollViewer = (ScrollViewer)VisualTreeHelper.GetChild(border, 0);
                         scrollViewer.ScrollToBottom();
                     }
+
+                    if (li.Count > 0)
+                        FlashWindow(this);
                 });
+
             }
             catch (Exception exception)
             {
