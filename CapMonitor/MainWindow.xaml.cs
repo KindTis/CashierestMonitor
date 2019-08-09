@@ -6,12 +6,29 @@ using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media;
 using Newtonsoft.Json.Linq;
 
 namespace CapMonitor
 {
+    public class StringToForegroundConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value != null && value.ToString().StartsWith("Buy"))
+                return "#ffa07a";
+            else
+                return "#87cefa";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     /// <summary>
     /// MainWindow.xaml에 대한 상호 작용 논리
     /// </summary>
@@ -97,17 +114,17 @@ namespace CapMonitor
             mUpdateOrderBookTimer.Elapsed += _UpdateOrderBook;
             mUpdateOrderBookTimer.AutoReset = true;
             mUpdateOrderBookTimer.Enabled = true;
+
+            this.Topmost = true;
         }
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            this.Topmost = true;
             StopFlashingWindow(this);
         }
 
         private void Window_Deactivated(object sender, EventArgs e)
         {
-            this.Topmost = true;
         }
 
         public string InsertComma(string number)
@@ -145,6 +162,14 @@ namespace CapMonitor
                 Dispatcher.Invoke((Action)delegate
                 {
                     tb_recentPrice.Text = recentTransactionData["Price"].ToString().Substring(0, 4);
+                    if (lb_bid1.Content.ToString() == tb_recentPrice.Text)
+                    {
+                        tb_recentPrice.Foreground = Brushes.LightSkyBlue;
+                    }
+                    else
+                    {
+                        tb_recentPrice.Foreground = Brushes.LightSalmon;
+                    }
                 });
 
                 List<string> li = new List<string>();
@@ -169,7 +194,7 @@ namespace CapMonitor
                         break;
 
                     string log = "";
-                    log += (recentTran["ResentType"].ToString() == "Bid") ? "매수" : "매도";
+                    log += (recentTran["ResentType"].ToString() == "Bid") ? "Buy" : "Sell";
                     log += "    ";
                     log += recentTran["TransactionDate"].ToString().Substring(5);
                     log += "    ";

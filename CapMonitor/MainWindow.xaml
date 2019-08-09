@@ -11,26 +11,36 @@
         Title="Cap Monitor" Height="403.585" Width="374.854">
     <Grid Background="#2D2D30">
         <TextBox Name="tb_recentPrice" Height="23" Margin="0,70,0,0" TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" Width="78"/>
-        <ListBox Name="lb_recentPayment" Foreground="#FFFFFF" HorizontalAlignment="Left" Height="196" Margin="10,161,0,0" VerticalAlignment="Top" Width="340"/>
-        <Label Name="lb_bid1" Content="0.08" Foreground="#FFFFFF" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="40"/>
+        <ListBox Name="lb_recentPayment" Foreground="#FFFFFF" HorizontalAlignment="Left" Height="196" Margin="10,161,0,0" VerticalAlignment="Top" Width="340">
+            <ListBox.Resources>
+                <local:StringToForegroundConverter x:Key="ForegroundConverter"/>
+            </ListBox.Resources>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}"
+                        Foreground="{Binding Converter={StaticResource ForegroundConverter}}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Label Name="lb_bid1" Content="1.00" Foreground="#87cefa" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="40"/>
         <TextBox Name="tb_bid1" HorizontalAlignment="Left" Height="23" Margin="50,10,0,0" TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="80"/>
-        <Label Name="lb_bid2" Content="0.08" Foreground="#FFFFFF" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="40"/>
+        <Label Name="lb_bid2" Content="1.00" Foreground="#87cefa" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="40"/>
         <TextBox Name="tb_bid2" HorizontalAlignment="Left" Height="23" Margin="50,40,0,0" TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="80"/>
-        <Label Name="lb_bid3" Content="0.08" Foreground="#FFFFFF" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" Width="40"/>
+        <Label Name="lb_bid3" Content="1.00" Foreground="#87cefa" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" Width="40"/>
         <TextBox Name="tb_bid3" HorizontalAlignment="Left" Height="23" Margin="50,70,0,0" TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="80"/>
-        <Label Name="lb_bid4" Content="0.08" Foreground="#FFFFFF" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="40"/>
+        <Label Name="lb_bid4" Content="1.00" Foreground="#87cefa" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="40"/>
         <TextBox Name="tb_bid4" HorizontalAlignment="Left" Height="23" Margin="50,100,0,0" TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="80"/>
-        <Label Name="lb_bid5" Content="0.08" Foreground="#FFFFFF" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" Width="40"/>
+        <Label Name="lb_bid5" Content="1.00" Foreground="#87cefa" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" Width="40"/>
         <TextBox Name="tb_bid5" HorizontalAlignment="Left" Height="23" Margin="50,130,0,0" TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="80"/>
-        <Label Name="lb_ask1" Content="0.08" Foreground="#FFFFFF" HorizontalAlignment="Left" Margin="230,10,0,0" VerticalAlignment="Top" Width="40"/>
+        <Label Name="lb_ask1" Content="1.00" Foreground="#ffa07a" HorizontalAlignment="Left" Margin="230,10,0,0" VerticalAlignment="Top" Width="40"/>
         <TextBox Name="tb_ask1" HorizontalAlignment="Left" Height="23" Margin="270,10,0,0" TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="80"/>
-        <Label Name="lb_ask2" Content="0.08" Foreground="#FFFFFF" HorizontalAlignment="Left" Margin="230,40,0,0" VerticalAlignment="Top" Width="40"/>
+        <Label Name="lb_ask2" Content="1.00" Foreground="#ffa07a" HorizontalAlignment="Left" Margin="230,40,0,0" VerticalAlignment="Top" Width="40"/>
         <TextBox Name="tb_ask2" HorizontalAlignment="Left" Height="23" Margin="270,40,0,0" TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="80"/>
-        <Label Name="lb_ask3" Content="0.08" Foreground="#FFFFFF" HorizontalAlignment="Left" Margin="230,70,0,0" VerticalAlignment="Top" Width="40"/>
+        <Label Name="lb_ask3" Content="1.00" Foreground="#ffa07a" HorizontalAlignment="Left" Margin="230,70,0,0" VerticalAlignment="Top" Width="40"/>
         <TextBox Name="tb_ask3" HorizontalAlignment="Left" Height="23" Margin="270,70,0,0" TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="80"/>
-        <Label Name="lb_ask4" Content="0.08" Foreground="#FFFFFF" HorizontalAlignment="Left" Margin="230,100,0,0" VerticalAlignment="Top" Width="40"/>
+        <Label Name="lb_ask4" Content="1.00" Foreground="#ffa07a" HorizontalAlignment="Left" Margin="230,100,0,0" VerticalAlignment="Top" Width="40"/>
         <TextBox Name="tb_ask4" HorizontalAlignment="Left" Height="23" Margin="270,100,0,0" TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="80"/>
-        <Label Name="lb_ask5" Content="0.08" Foreground="#FFFFFF" HorizontalAlignment="Left" Margin="230,130,0,0" VerticalAlignment="Top" Width="40"/>
+        <Label Name="lb_ask5" Content="1.00" Foreground="#ffa07a" HorizontalAlignment="Left" Margin="230,130,0,0" VerticalAlignment="Top" Width="40"/>
         <TextBox Name="tb_ask5" HorizontalAlignment="Left" Height="23" Margin="270,130,0,0" TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="80"/>
     </Grid>
 </Window>
