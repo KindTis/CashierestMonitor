@@ -8,10 +8,10 @@
         ResizeMode="NoResize"
         Activated="Window_Activated"
         Deactivated="Window_Deactivated"
-        Title="Cap Monitor" Height="403.585" Width="374.854">
+        Title="Cap Monitor" Height="425" Width="380">
     <Grid Background="#2D2D30">
         <TextBox Name="tb_recentPrice" Height="23" Margin="0,70,0,0" TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" Width="78"/>
-        <ListBox Name="lb_recentPayment" Foreground="#FFFFFF" HorizontalAlignment="Left" Height="196" Margin="10,161,0,0" VerticalAlignment="Top" Width="340">
+        <ListBox Name="lb_recentPayment" Foreground="#FFFFFF" HorizontalAlignment="Left" Height="212" Margin="10,161,0,0" VerticalAlignment="Top" Width="340">
             <ListBox.Resources>
                 <local:StringToForegroundConverter x:Key="ForegroundConverter"/>
             </ListBox.Resources>
