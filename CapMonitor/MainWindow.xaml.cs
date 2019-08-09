@@ -149,21 +149,40 @@ namespace CapMonitor
 
                 List<string> li = new List<string>();
                 string lastTransactionID = recentTransactionData["TransactionID"].ToString();
+                float prevPrice = -1, currPrice = -1;
+                var returnData = RecentTransactions["ReturnData"];
                 foreach (var recentTran in RecentTransactions["ReturnData"])
                 {
+                    string priceStr = recentTran["Price"].ToString();
+                    priceStr = priceStr.Substring(0, priceStr.IndexOf(".") + 3);
+                    currPrice = float.Parse(priceStr);
+
+                    if (recentTran.Next != null)
+                    {
+                        prevPrice = float.Parse(recentTran.Next["Price"].ToString().Substring(0,
+                            recentTran.Next["Price"].ToString().IndexOf(".") + 3));
+                    }
+                    else
+                        prevPrice = -1;
+
                     if (mLastTransactionID == recentTran["TransactionID"].ToString())
                         break;
 
                     string log = "";
                     log += (recentTran["ResentType"].ToString() == "Bid") ? "매수" : "매도";
-                    log += " ";
-                    log += recentTran["TransactionDate"];
                     log += "    ";
-                    log += recentTran["Price"].ToString().Substring(0, 4);
+                    log += recentTran["TransactionDate"].ToString().Substring(5);
+                    log += "    ";
+                    if (prevPrice == -1 || prevPrice == currPrice) { log += "〓"; }
+                    else if (prevPrice < currPrice) { log += "△"; }
+                    else { log += "▽"; }
+                    log += " ";
+                    log += priceStr.Substring(0, priceStr.IndexOf(".") + 3);
                     log += "    ";
                     log += InsertComma(recentTran["UnitTraded"].ToString().Substring(0,
                         recentTran["UnitTraded"].ToString().IndexOf(".")));
                     li.Add(log);
+                    prevPrice = currPrice;
                 }
 
                 mLastTransactionID = lastTransactionID;
