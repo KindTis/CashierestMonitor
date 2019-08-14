@@ -162,14 +162,7 @@ namespace CapMonitor
                 Dispatcher.Invoke((Action)delegate
                 {
                     tb_recentPrice.Text = recentTransactionData["Price"].ToString().Substring(0, 4);
-                    if (lb_bid1.Content.ToString() == tb_recentPrice.Text)
-                    {
-                        tb_recentPrice.Foreground = Brushes.LightSkyBlue;
-                    }
-                    else
-                    {
-                        tb_recentPrice.Foreground = Brushes.LightSalmon;
-                    }
+                    tb_recentPrice.Foreground = Brushes.Yellow;
                 });
 
                 List<string> li = new List<string>();
