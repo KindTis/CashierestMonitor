@@ -1,14 +1,15 @@
-﻿<Window x:Class="CapMonitor.MainWindow"
+﻿<Controls:MetroWindow x:Class="CapMonitor.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:CapMonitor"
         mc:Ignorable="d"
         ResizeMode="NoResize"
         Activated="Window_Activated"
         Deactivated="Window_Deactivated"
-        Title="Cap Monitor" Height="425" Width="380">
+        Title="Cap Monitor" Height="420" Width="365">
     <Window.Resources>
         <SolidColorBrush x:Key="TransparentBrush" Color="Transparent"/>
         <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}" x:Key="OrderBookChangedHighlight">
@@ -30,7 +31,7 @@
                 <EventTrigger RoutedEvent="TextBox.TextChanged">
                     <BeginStoryboard>
                         <Storyboard>
-                            <ColorAnimation From="Yellow" 
+                            <ColorAnimation From="Gold" 
                                     Storyboard.TargetProperty="(TextBox.Background).(SolidColorBrush.Color)" 
                                     FillBehavior="Stop" 
                                     Duration="0:0:1"/>
@@ -82,8 +83,8 @@
     </Window.Resources>
 
     <Grid Background="#2D2D30">
-        <TextBox Name="tb_recentPrice" Style="{StaticResource PriceChangedHighlight}" Foreground="Yellow" Height="23" Margin="0,70,0,0" TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" Width="78"/>
-        <ListBox Name="lb_recentPayment" ItemContainerStyle="{StaticResource AddListBoxItem}"  Foreground="#FFFFFF" HorizontalAlignment="Left" Height="212" Margin="10,161,0,0" VerticalAlignment="Top" Width="340">
+        <TextBox Name="tb_recentPrice" Style="{StaticResource PriceChangedHighlight}" Foreground="Gold" Height="23" Margin="0,70,0,0" TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" Width="78"/>
+        <ListBox Name="lb_recentPayment" ItemContainerStyle="{StaticResource AddListBoxItem}"  Foreground="#FFFFFF" HorizontalAlignment="Left" Height="212" Margin="10,165,0,0" VerticalAlignment="Top" Width="340">
             <ListBox.Resources>
                 <local:StringToForegroundConverter x:Key="ForegroundConverter"/>
             </ListBox.Resources>
@@ -115,4 +116,4 @@
         <Label Name="lb_ask5" Content="1.00" Foreground="#ffa07a" HorizontalAlignment="Left" Margin="230,130,0,0" VerticalAlignment="Top" Width="40"/>
         <TextBox Name="tb_ask5" Style="{StaticResource OrderBookChangedHighlight}" HorizontalAlignment="Left" Height="23" Margin="270,130,0,0" TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="80"/>
     </Grid>
-</Window>
+</Controls:MetroWindow>
