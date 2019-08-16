@@ -162,7 +162,6 @@ namespace CapMonitor
                 Dispatcher.Invoke((Action)delegate
                 {
                     tb_recentPrice.Text = recentTransactionData["Price"].ToString().Substring(0, 4);
-                    tb_recentPrice.Foreground = Brushes.Yellow;
                 });
 
                 List<string> li = new List<string>();
