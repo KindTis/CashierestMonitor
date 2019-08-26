@@ -10,6 +10,8 @@ using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media;
 using Newtonsoft.Json.Linq;
+using IniParser;
+using IniParser.Model;
 
 namespace CapMonitor
 {
@@ -100,6 +102,9 @@ namespace CapMonitor
         private static System.Timers.Timer mUpdateRecentTransactionTimer;
         private static System.Timers.Timer mUpdateOrderBookTimer;
         private string mLastTransactionID = "";
+        private string mCoin = "CAP";
+        private bool mUseFlashing = false;
+        private bool mUseTopMost = false;
 
         public MainWindow()
         {
@@ -115,12 +120,59 @@ namespace CapMonitor
             mUpdateOrderBookTimer.AutoReset = true;
             mUpdateOrderBookTimer.Enabled = true;
 
-            this.Topmost = true;
+            if (File.Exists("config.ini"))
+            {
+                var parser = new FileIniDataParser();
+                IniData config = parser.ReadFile("config.ini");
+
+                bool needSave = false;
+                string value = "";
+
+                value = config["option"]["coin"];
+                if (value.Length == 0)
+                {
+                    config["option"]["coin"] = mCoin;
+                    needSave = true;
+                }
+                else mCoin = value;
+
+                value = config["option"]["flashing"];
+                if (value.Length == 0)
+                {
+                    config["option"]["flashing"] = mUseFlashing.ToString();
+                    needSave = true;
+                }
+                else mUseFlashing = bool.Parse(value);
+
+                value = config["option"]["topmost"];
+                if (value.Length == 0)
+                {
+                    config["option"]["topmost"] = mUseTopMost.ToString();
+                    needSave = true;
+                }
+                else mUseTopMost = bool.Parse(value);
+
+                if (needSave)
+                    parser.WriteFile("config.ini", config);
+            }
+            else
+            {
+                var parser = new FileIniDataParser();
+                IniData config = new IniData();
+                config["option"]["coin"] = mCoin;
+                config["option"]["flashing"] = mUseFlashing.ToString();
+                config["option"]["topmost"] = mUseTopMost.ToString();
+                parser.WriteFile("config.ini", config);
+            }
+
+            this.Title = mCoin + " Monitor";
+            this.Topmost = mUseTopMost;
         }
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            StopFlashingWindow(this);
+            if (mUseFlashing)
+                StopFlashingWindow(this);
         }
 
         private void Window_Deactivated(object sender, EventArgs e)
@@ -142,7 +194,8 @@ namespace CapMonitor
 
         private void _UpdateRecentTransaction(Object source, ElapsedEventArgs e)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://rest.cashierest.com/Public/RecentTransactions?Coin=CAP");
+            string url = "https://rest.cashierest.com/Public/RecentTransactions?Coin=" + mCoin;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
 
             try
@@ -217,7 +270,7 @@ namespace CapMonitor
                         scrollViewer.ScrollToBottom();
                     }
 
-                    if (li.Count > 0)
+                    if (mUseFlashing && li.Count > 0)
                         FlashWindow(this);
                 });
 
@@ -233,7 +286,8 @@ namespace CapMonitor
 
         private void _UpdateOrderBook(Object source, ElapsedEventArgs e)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://rest.cashierest.com/Public/OrderBook?Coin=CAP");
+            string url = "https://rest.cashierest.com/Public/OrderBook?Coin=" + mCoin;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
 
             try

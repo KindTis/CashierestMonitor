@@ -9,7 +9,7 @@
         ResizeMode="NoResize"
         Activated="Window_Activated"
         Deactivated="Window_Deactivated"
-        Title="Cap Monitor" Height="420" Width="365">
+        Title="Monitor" Height="420" Width="365">
     <Window.Resources>
         <SolidColorBrush x:Key="TransparentBrush" Color="Transparent"/>
         <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}" x:Key="OrderBookChangedHighlight">
